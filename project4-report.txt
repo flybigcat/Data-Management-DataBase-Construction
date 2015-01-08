@@ -1,0 +1,32 @@
+Project4 report
+
+team23
+members: Wei-Han Chen, Huijuan Huang
+
+In project 4, an iterator based pipeline query engine in implemented.
+
+Class Hierarchy
+
+1. The extension of the RelationManager
+     Three more methods are added here orchestrate both the dbf and rx layers, and rm layer will also be managing the catalog information related to indices at this level.      
+
+2. Query Engine
+This component is used to give answer to query.
+
+The whole design of Query Engine is as follow:
+                              Iterator
+Table Scan, Index Scan, Filter, Project, NL Join, INL Join, Aggregate (basic)
+
+The hard point in this project 4 is grace hash join, which uses a hash function for partitioning, which turns out that the subsets of R have approximately equal size under the assumption that a tuple of S joins with at most one block of tuples of R. But if R contains many tuples with the same joining attribute value, then this partitioning may not be possible. 
+
+There are two phases of grace hash join process.
+for example. join R and S on R.x = S.x
+1. partition
+Partition R with hash function h1 on join column x, and write the to disk file
+and then partition S with the same hash function h1 on join column x,
+in this way Ri and Si are co-local
+
+2. join
+use map for Ri partition with Si partition and find the matching record
+
+Note to use smaller partition as “outer” loop to probe “inner” partition
